@@ -1,0 +1,72 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+#clock {
+    font-size: 60px;
+    color: white;
+    background-color: #000;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+}
+
+header {
+    background-color: #0073e6;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+    background-color: #0073e6;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* テーブルのスタイル */
+table {
+    width: 100%;
+    border-collapse: separate; /* border-collapseをseparateに変更 */
+    border-spacing: 0; /* セル間の間隔をなくす */
+    margin-top: 20px;
+    background-color: white; /* 背景色を白に設定 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* テーブルに軽い影をつけて立体感を出す */
+}
+
+th, td {
+    padding: 15px; /* セルの内側の余白を増やして見やすく */
+    text-align: center;
+    border: 1px solid #ccc; /* 枠線の色を少し薄く */
+}
+
+th {
+    background-color: #f2f2f2; /* ヘッダーセルの背景色 */
+    font-weight: bold; /* ヘッダー文字を太く */
+    color: #333; /* ヘッダーの文字色 */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* 偶数行の背景色を変更して視覚的に分かりやすく */
+}
+
+tr:hover {
+    background-color: #e6f7ff; /* 行にカーソルを合わせたときに色を変える */
+}
+
+td {
+    color: #333; /* セル内の文字色を設定 */
+}
+
