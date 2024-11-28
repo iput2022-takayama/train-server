@@ -3,78 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="600"> <!-- 600秒 = 10分ごとにリロード -->
-    <title>百草園駅 出発時刻</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta http-equiv="refresh" content="600">
+    <title>百草園駅 電車状況</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <!-- FontAwesomeのCDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <!-- Chart.jsのCDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- デジタル時計 -->
-    <div id="clock"></div>
-    <script src="{{ url_for('static', filename='js/clock.js') }}"></script>
+    <header>
+        <h1>百草園駅 電車状況</h1>
+        <div id="clock">
+            <i class="fas fa-clock"></i> <span id="time-display">12:34:56</span>
+        </div>
+    </header>
 
-    <!-- 百草園駅の出発時刻 -->
-    <h1>百草園駅の出発時刻</h1>
+    <main>
+        <!-- 京王線の遅延情報 -->
+        <section>
+            <h2>京王線の遅延情報</h2>
+            <p id="keio-delay-info" class="{{ 'delayed' if keio_delay_info != '京王線は通常運転です' else 'normal' }}">
+                {{ keio_delay_info or '遅延情報がありません' }}
+            </p>
+        </section>
 
-    <!-- 京王線の遅延情報 -->
-    <h2>京王線の遅延情報</h2>
-    <p>{{ keio_delay_info }}</p>
-
-    {% if shinjuku_times %}
-        <h2>新宿方面</h2>
-        <ul>
-            {% for time_info in shinjuku_times %}
-                <li>{{ time_info['time'] }} - : {{ time_info['train_type'] }} - : {{ time_info['destination'] }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>新宿方面の時刻情報が取得できませんでした。</p>
-    {% endif %}
-
-    {% if keio_hachioji_times %}
-        <h2>京王八王子方面</h2>
-        <ul>
-            {% for time_info in keio_hachioji_times %}
-                <li>{{ time_info['time'] }} - : {{ time_info['train_type'] }} - : {{ time_info['destination'] }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>京王八王子方面の時刻情報が取得できませんでした。</p>
-    {% endif %}
-
-    {% if message %}
-        <p>{{ message }}</p>
-    {% endif %}
-
-    <!-- 天気データのテーブル -->
-    <h1>東京の天気</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>時間</th>
-                <th>天気</th>
-                <th>温度 (°C)</th>
-                <th>降水量 (mm)</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if weather_data %}
-                {% for weather in weather_data %}
-                    <tr>
-                        <td>{{ weather.time }}</td>
-                        <td>{{ weather.weather }}</td>
-                        <td>{{ weather.temperature }}</td>
-                        <td>{{ weather.precipitation }}</td>
-                    </tr>
-                {% endfor %}
+        <!-- 横並びにするための親コンテナ -->
+        
+        <!-- 新宿方面 -->
+        <section>
+            <h2 class="platform">新宿方面  <span class="sinjuku-platform-number">2番ホーム</span></h2>
+            {% if shinjuku_times %}
+                
+                <ul>
+                    {% for time_info in shinjuku_times %}
+                        <li>{{ time_info['time'] }} - {{ time_info['train_type'] }} - {{ time_info['destination'] }}</li>
+                    {% endfor %}
+                </ul>
             {% else %}
-                <tr>
-                    <td colspan="4">天気データが取得できませんでした。</td>
-                </tr>
+                <p class="no-info">新宿方面の時刻情報が取得できませんでした。</p>
             {% endif %}
-        </tbody>
-    </table>
+        </section>
+
+        <!-- 京王八王子方面 -->
+        <section>
+            <h2 class="platform">京王八王子方面 <span class="hachioji-platform-number">1番ホーム</span></h2>
+            {% if keio_hachioji_times %}
+                
+                <ul>
+                    {% for time_info in keio_hachioji_times %}
+                        <li>{{ time_info['time'] }} - {{ time_info['train_type'] }} - {{ time_info['destination'] }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="no-info">京王八王子方面の時刻情報が取得できませんでした。</p>
+            {% endif %}
+        </section>
+        <!-- 天気データ -->
+        <section>
+            <h1>東京の天気</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>時間</th>
+                        <th>天気</th>
+                        <th>温度 (°C)</th>
+                        <th>降水量 (mm)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if weather_data %}
+                        {% for weather in weather_data %}
+                            <tr>
+                                <td>{{ weather.time }}</td>
+                                <td>{{ weather.weather }}</td>
+                                <td>{{ weather.temperature }}</td>
+                                <td>{{ weather.precipitation }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4">天気データが取得できませんでした。</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/clock.js') }}"></script>
 </body>
 </html>

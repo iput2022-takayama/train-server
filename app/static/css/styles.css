@@ -1,72 +1,184 @@
+/* 背景全体 */
 body {
-    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Courier New', monospace;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
 }
 
+/* デジタル時計 */
 #clock {
-    font-size: 60px;
-    color: white;
-    background-color: #000;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+    font-size: 3rem;
+    color: #ffcc00;
+    text-align: center;
+    margin: 20px 0;
 }
 
-header {
-    background-color: #0073e6;
-    color: white;
-    padding: 10px 0;
+#clock i {
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+/* ヘッダー */
+h1, h2 {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+/* 横線 */
+hr {
+    border: none;
+    height: 2px;
+    background-color: #444;
+    margin: 20px 0;
+}
+
+/* 遅延情報のスタイル */
+#keio-delay-info {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 10px;
+    margin: 20px auto;
+    text-align: center;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 600px;
+}
+
+/* 通常運転時（黄色背景） */
+#keio-delay-info.normal {
+    background-color: #ffcc00;
+    color: #000;
+}
+
+/* 遅延時（赤色背景） */
+#keio-delay-info.delayed {
+    background-color: #ff0000;
+    color: #fff;
+}
+
+/* 電車情報リスト */
+ul {
+    text-align: center;
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    color: #ffcc00;
+    max-width: 600px;
+}
+
+
+
+
+p.no-info {
+    text-align: center; /* センター配置 */
+    font-size: 1.5rem; /* サイズを <li> に合わせる */
+    color: #ffcc00; /* 警告色 */
+    margin: 20px auto; /* 上下に余白、左右を自動で中央に配置 */
+    padding: 10px; /* 枠内の余白 */
+    border: 1px solid #444; /* 枠線の色 */
+    background-color: #222; /* 背景色 */
+    border-radius: 5px; /* 角を丸める */
+    width: 80%; /* 幅を80%に設定（必要に応じて調整） */
+    max-width: 600px; /* 最大幅を600pxに設定 */
+    box-sizing: border-box; /* パディングも含めてサイズ調整 */
+}
+
+li {
+    font-size: 1.5rem;
+    margin: 10px auto; /* 左右中央に配置するため、左右のマージンをautoに */
+    display: flex;
+    
+    
+    padding: 10px; /* 枠内の余白 */
+    border: 1px solid #444; /* 枠線の色 */
+    background-color: #222; /* 背景色 */
+    border-radius: 5px; /* 角を丸める */
+    width: 80%; /* 幅を80%に設定（p.no-infoと一致させる） */
+    max-width: 600px; /* 最大幅を600pxに設定 */
+    box-sizing: border-box; /* パディングも含めてサイズ調整 */
+}
+
+.time {
+    color: #ffcc00;
+    font-weight: bold;
+}
+
+.type {
+    color: #fff;
+    background-color: #333;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+.destination {
+    color: #ffcc00;
+}
+
+/* プラットフォーム（新宿・八王子方面） */
+.platform {
+    text-align: center;
+    color: #fff;
+    font-size: 1.5rem;
+    margin: 20px 0;
+}
+
+/* 新宿方面の2番ホームにピンク色の枠を付ける */
+.sinjuku-platform-number {
+    border: 2px solid #f20089; /* ピンク色の枠 */
+    padding: 5px 10px; /* 枠の内側の余白 */
+    border-radius: 5px; /* 角を丸める */
+    color: #fff; /* 文字色を白に */
+    background-color: #f20089; 
+}
+
+.hachioji-platform-number {
+    border: 2px solid #2b6eea; /* 青色の枠 */
+    padding: 5px 10px; /* 枠の内側の余白 */
+    border-radius: 5px; /* 角を丸める */
+    color: #fff; /* 文字色を白に */
+    background-color: #2b6eea; 
+}
+
+/* 天気テーブル */
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    color: #fff;
+    background-color: #222;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #444;
     text-align: center;
 }
 
-main {
-    padding: 20px;
+th {
+    background-color: #333;
+    color: #ffcc00;
 }
 
+tr:nth-child(even) {
+    background-color: #1a1a1a;
+}
+
+tr:hover {
+    background-color: #444;
+}
+
+/* フッター固定 */
 footer {
-    background-color: #0073e6;
-    color: white;
+    background-color: #333;
+    color: #fff;
     text-align: center;
     padding: 10px 0;
     position: fixed;
     bottom: 0;
     width: 100%;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
 }
-
-/* テーブルのスタイル */
-table {
-    width: 100%;
-    border-collapse: separate; /* border-collapseをseparateに変更 */
-    border-spacing: 0; /* セル間の間隔をなくす */
-    margin-top: 20px;
-    background-color: white; /* 背景色を白に設定 */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* テーブルに軽い影をつけて立体感を出す */
-}
-
-th, td {
-    padding: 15px; /* セルの内側の余白を増やして見やすく */
-    text-align: center;
-    border: 1px solid #ccc; /* 枠線の色を少し薄く */
-}
-
-th {
-    background-color: #f2f2f2; /* ヘッダーセルの背景色 */
-    font-weight: bold; /* ヘッダー文字を太く */
-    color: #333; /* ヘッダーの文字色 */
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9; /* 偶数行の背景色を変更して視覚的に分かりやすく */
-}
-
-tr:hover {
-    background-color: #e6f7ff; /* 行にカーソルを合わせたときに色を変える */
-}
-
-td {
-    color: #333; /* セル内の文字色を設定 */
-}
-
