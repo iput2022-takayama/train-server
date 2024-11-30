@@ -1,3 +1,4 @@
+# これはAPIから天気のデータを取得するテストファイルです
 import requests
 
 # Open-Meteo APIのエンドポイント

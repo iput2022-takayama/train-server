@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="600">
+    <meta http-equiv="refresh" content="470">
     <title>百草園駅 電車状況</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
@@ -26,41 +26,65 @@
         <section>
             <h2>京王線の遅延情報</h2>
             <p id="keio-delay-info" class="{{ 'delayed' if keio_delay_info != '京王線は通常運転です' else 'normal' }}">
-                {{ keio_delay_info or '遅延情報がありません' }}
+                {{ keio_delay_info if keio_delay_info else '遅延情報がありません' }}
             </p>
         </section>
 
-        <!-- 横並びにするための親コンテナ -->
+        
         
         <!-- 新宿方面 -->
         <section>
-            <h2 class="platform">新宿方面  <span class="sinjuku-platform-number">2番ホーム</span></h2>
+            <h2 class="platform">新宿方面 <span class="sinjuku-platform-number">2番ホーム</span></h2>
             {% if shinjuku_times %}
-                
                 <ul>
                     {% for time_info in shinjuku_times %}
-                        <li>{{ time_info['time'] }} - {{ time_info['train_type'] }} - {{ time_info['destination'] }}</li>
+                        <li>
+                            <span class="time">{{ time_info['time'] }}</span> &nbsp;-&nbsp; 
+                            <span class="train-type 
+                                {% if time_info['train_type'] == '各停' %}local{% 
+                                elif time_info['train_type'] == '急行' %}express{% 
+                                elif time_info['train_type'] == '快速' %}rapid{% endif %}
+                            ">
+                                {{ time_info['train_type'] }}
+                            </span> &nbsp;-&nbsp;  
+                            <span class="destination">{{ time_info['destination'] }}</span>
+                        </li>
                     {% endfor %}
                 </ul>
             {% else %}
                 <p class="no-info">新宿方面の時刻情報が取得できませんでした。</p>
             {% endif %}
         </section>
+        
+        
+        
 
         <!-- 京王八王子方面 -->
         <section>
             <h2 class="platform">京王八王子方面 <span class="hachioji-platform-number">1番ホーム</span></h2>
             {% if keio_hachioji_times %}
-                
                 <ul>
                     {% for time_info in keio_hachioji_times %}
-                        <li>{{ time_info['time'] }} - {{ time_info['train_type'] }} - {{ time_info['destination'] }}</li>
+                        <li>
+                            <span class="time">{{ time_info['time'] }}</span> &nbsp;-&nbsp; 
+                            <span class="train-type 
+                                {% if time_info['train_type'] == '各停' %}local{% 
+                                elif time_info['train_type'] == '急行' %}express{% 
+                                elif time_info['train_type'] == '快速' %}rapid{% endif %}
+                            ">
+                                {{ time_info['train_type'] }}
+                            </span> &nbsp;-&nbsp; 
+                            <span class="destination">{{ time_info['destination'] }}</span>
+                        </li>
                     {% endfor %}
                 </ul>
             {% else %}
                 <p class="no-info">京王八王子方面の時刻情報が取得できませんでした。</p>
             {% endif %}
         </section>
+        
+
+
         <!-- 天気データ -->
         <section>
             <h1>東京の天気</h1>

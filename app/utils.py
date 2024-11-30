@@ -9,32 +9,76 @@ BASE_URL = "https://api.open-meteo.com/v1/forecast"
 LATITUDE = 35.682839  # 東京の緯度
 LONGITUDE = 139.759455  # 東京の経度
 
+last_status = "京王線は通常運転です"
+
+def send_to_slack(message):
+    """Slackにメッセージを送信する関数"""
+    # SlackのWebhook URLを設定（実際のURLに置き換えてください）
+    webhook_url = "https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXX"
+    
+    # Slackメッセージのペイロードを作成
+    payload = {
+        "text": message  # 送信するメッセージ
+    }
+    
+    # POSTリクエストでメッセージを送信
+    response = requests.post(webhook_url, json=payload)
+    
+    if response.status_code != 200:
+        print(f"Slackへのメッセージ送信に失敗しました: {response.status_code}")
+    else:
+        print("Slackへのメッセージ送信に成功しました")
+
+
 def get_keio_delay_info():
     """京王線の遅延情報を取得し、遅延詳細を表示"""
-    # 京王線の遅延情報のURL
-    url = "https://transit.yahoo.co.jp/diainfo/102/0"
+    global last_status  # グローバル変数を使用する宣言
+    url = "https://transit.yahoo.co.jp/diainfo/102/0"  # 京王線遅延情報のURL
 
-    # リクエストを送信
-    response = requests.get(url)
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # HTTPエラーが発生した場合例外を送出
+    except requests.RequestException as e:
+        print(f"遅延情報の取得に失敗しました: {e}")
+        return "遅延情報の取得に失敗しました"
 
-    if response.status_code != 200:
-        return None  # エラー時にはNoneを返す
-
-    # BeautifulSoupでHTMLを解析
     soup = BeautifulSoup(response.text, 'html.parser')
-
-    # 遅延情報の <dd class="trouble"> を探す
     delay_info = soup.find('dd', class_='trouble')
 
     if delay_info:
-        # 遅延詳細のテキスト（<p>タグの中身）を取得
-        delay_details = delay_info.find('p')  # <p>タグの中身を取得
+        # 遅延が発生している場合
+        delay_details = delay_info.find('p')
         if delay_details:
-            return f"京王線は遅延しています。詳細: {delay_details.get_text(strip=True)}"
+            delay_text = delay_details.get_text(strip=True)  # 遅延詳細テキスト（サイト表示用）
+            slack_message = (
+                f"京王線は遅延しています。詳細: {delay_text}\n"
+                f"遅延証明書: https://www.keio.co.jp/train/delay/"
+            )  # Slack通知用
+            if slack_message != last_status:  # 前回のSlackメッセージと異なる場合にのみ送信
+                send_to_slack(slack_message)
+                last_status = slack_message  # 最新状態をSlack通知用に保存
+            return f"京王線は遅延しています。詳細: {delay_text}"  # サイト表示用メッセージを返す
         else:
-            return "京王線は遅延していますが、詳細は確認できませんでした。"
+            slack_message = (
+                "京王線は遅延していますが、詳細は確認できませんでした。\n"
+                f"遅延証明書: https://www.keio.co.jp/train/delay/"
+            )  # Slack通知用
+            if slack_message != last_status:  # 前回のSlackメッセージと異なる場合にのみ送信
+                send_to_slack(slack_message)
+                last_status = slack_message  # 最新状態をSlack通知用に保存
+            return "京王線は遅延していますが、詳細は確認できませんでした。"  # サイト表示用メッセージを返す
     else:
+        # 遅延が解消され、現在通常運転の場合
+        if last_status != "京王線は通常運転です":
+            resolved_message = "京王線は通常運転に戻りました。問題は解決しました。"
+            # 遅延情報から通常運転への変更時にのみ送信
+            send_to_slack(resolved_message)
+
+        # 状態を通常運転に更新
+        last_status = "京王線は通常運転です"
         return "京王線は通常運転です"
+
+
 
 
 def get_departure_times():

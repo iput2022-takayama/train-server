@@ -1,3 +1,4 @@
+# これはスクレイピングから電車の時刻表を取得するテストファイルです
 import requests
 from bs4 import BeautifulSoup
 
