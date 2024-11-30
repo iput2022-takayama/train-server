@@ -1,3 +1,3 @@
-Flask
-requests
-beautifulsoup4
+Flask==3.1.0  # 軽量なWebアプリケーションフレームワーク
+requests==2.32.3  # HTTPリクエストを簡単に扱うライブラリ
+beautifulsoup4==4.12.3  # HTMLやXMLの解析を行うライブラリ
