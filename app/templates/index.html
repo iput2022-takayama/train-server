@@ -42,7 +42,7 @@
                             <span class="time">{{ time_info['time'] }}</span> &nbsp;-&nbsp; 
                             <span class="train-type 
                                 {% if time_info['train_type'] == '各停' %}local{% 
-                                elif time_info['train_type'] == '急行' %}express{% 
+                                elif time_info['train_type'] == '区間急行' %}express{% 
                                 elif time_info['train_type'] == '快速' %}rapid{% endif %}
                             ">
                                 {{ time_info['train_type'] }}
@@ -69,7 +69,7 @@
                             <span class="time">{{ time_info['time'] }}</span> &nbsp;-&nbsp; 
                             <span class="train-type 
                                 {% if time_info['train_type'] == '各停' %}local{% 
-                                elif time_info['train_type'] == '急行' %}express{% 
+                                elif time_info['train_type'] == '区間急行' %}express{% 
                                 elif time_info['train_type'] == '快速' %}rapid{% endif %}
                             ">
                                 {{ time_info['train_type'] }}
